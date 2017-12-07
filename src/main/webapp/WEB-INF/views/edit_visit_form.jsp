@@ -9,30 +9,35 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Pacjenci</title>
-
+<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/style.css"/>">
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery.ui.all.css" type="text/css" media="screen">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 </head>
 <%@	include file="../../../header.jsp"%>
 <body>
 
 	<div class="jumbotron">
-		<h2 class="text-center">ADD VISIT FORM</h2>
+		<h2 class="text-center">EDIT VISIT FORM</h2>
 	</div>
 	
 	<div class="container center_div">
 		<div class="col-sm-4 col-sm-offset-4">
-			<form:form method="post" modelAttribute="visit" align="left">
-						
-				Patient:<br>
-				<form:select path="patient" items="${patients}" itemValue="id"
-					itemLabel="lastname" class="form-control" />
+			<form:form method="post" modelAttribute="visit">
+			Patient:<br>
+				<form:select path="patient" class="form-control">
+					<form:option value="${visit.patient.id}"
+						label="${visit.patient.firstname} ${visit.patient.lastname}" />
+					<form:options items="${patients}" itemValue="id"
+						itemLabel="lastname" />
+				</form:select>
 				<form:errors path="patient" class="error" />
-				<br>			
-				Date(yyyy-mm-dd):<br>
-				<form:input path="date" class="form-control datepicker" data-date-format="yyyy-mm-dd"/>
-				<form:errors path="date" class="error" />
-				<span class="error">${message}</span>
 				<br>
-					Time:<br>
+			Date(yyyy-mm-dd):<br>
+				<form:input path="date" class="form-control datepicker"/>
+				<form:errors path="date" class="error" />
+				<br>
+			Time:<br>
 				<form:select path="hour" class="form-control">
 					<form:option value="9" label="9:00" />
 					<form:option value="10" label="10:00" />
@@ -47,17 +52,19 @@
 				</form:select>
 				<br>
 				<form:errors path="hour" class="error" />
-				Service:<br>
-				<form:select path="service" items="${services}" itemValue="id"
-					itemLabel="name" class="form-control" />
-				<br>
+			Service:<br>
+				<form:select path="service" class="form-control">
+					<form:option value="${visit.service.id}"
+						label="${visit.service.name}" />
+					<form:options items="${services}" itemValue="id" itemLabel="name" />
+				</form:select>
 				<form:errors path="service" class="error" />
-
-				<input type="submit" value="Add" class="btn btn-default"/>
+				<br>
+				<input type="submit" value="Edit" class="btn btn-default"/>
 			</form:form>
 		</div>
 	</div>
-
+	
 </body>
 <script type="text/javascript" src="<c:url value="/static/js/datepicker.js"/>"></script>
 </html>

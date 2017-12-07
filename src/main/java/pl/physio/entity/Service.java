@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 public class Service {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
 	@Size(min=5, max=50)
@@ -23,6 +23,7 @@ public class Service {
 	private String name;
 	
 	@Size(min=10, max=255)
+	@Column(length=255)
 	private String description;
 	
 	@NotNull

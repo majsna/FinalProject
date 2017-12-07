@@ -42,12 +42,6 @@ public class ServiceController {
 		return "redirect:./";
 	}
 	
-	@RequestMapping("/del/{id}")
-	public String delService(@PathVariable long id) {
-		serviceRepository.delete(id);
-		return "redirect:../";
-	}
-	
 	@RequestMapping(value="/edit/{id}", method=RequestMethod.GET)
 	public String editService(Model model, @PathVariable long id) {
 		model.addAttribute("service", serviceRepository.findOne(id));

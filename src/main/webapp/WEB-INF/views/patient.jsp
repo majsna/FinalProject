@@ -8,23 +8,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Pacjenci</title>
+<title>Patients</title>
 <link rel="stylesheet" type="text/css" href="<c:url value="/static/css/style.css"/>">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-	integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
-	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-	integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-	crossorigin="anonymous"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-	integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-	crossorigin="anonymous"></script>
 
 </head>
 <%@	include file="../../../header.jsp"%>
@@ -33,72 +18,75 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-2"></div>
-			<div class="col-sm-4">
-				<h2>ADD NEW PATIENT</h2>
-				<form:form method="post" modelAttribute="patient" id="patientForm">
-					First name:<br>
-					<form:input path="firstname" id="firstname" class="alert alert-success"/>
+			<div class="col-sm-3">
+				<h2 class="text-center">ADD NEW PATIENT</h2>
+				<form:form method="post" modelAttribute="patient" id="patientForm" >
+				<!-- <div class="form-group"> -->
+					
+					First name:<form:input path="firstname" id="firstname" class="form-control"/>
 					<form:errors path="firstname" />
 					<br>
-					Last name:<br>
-					<form:input path="lastname" id="lastname" class="alert alert-success"/>
+					Last name:
+					<form:input path="lastname" id="lastname" class="form-control"/>
 					<form:errors path="lastname" />
-					<br>
-					Email:<br>
-					<form:input path="email" id="email" class="alert alert-success"/>
+						<br>
+					Email:
+					<form:input path="email" id="email" class="form-control"/>
+					<p>${alert}</p>
 					<form:errors path="email" />
 					<br>
-					Phone Number:<br>
-					<form:input path="phone" id="phone" class="alert alert-success"/>
+					Phone Number:
+					<form:input path="phone" id="phone" class="form-control"/>
 					<form:errors path="phone" />
 					<br>
-					Pesel:<br>
-					<form:input path="pesel" id="pesel" class="alert alert-success"/>
+					Pesel:
+					<form:input path="pesel" id="pesel" class="form-control"/>
 					<form:errors path="pesel" />
 					<br>
-					Street:<br>
-					<form:input path="street" id="street" class="alert alert-success"/>
+					Street:
+					<form:input path="street" id="street" class="form-control"/>
 					<form:errors path="street" />
 					<br>
-					Postcode:<br>
-					<form:input path="postcode" id="postcode" class="alert alert-success"/>
+					Postcode:
+					<form:input path="postcode" id="postcode" class="form-control"/>
 					<form:errors path="postcode" />
 					<br>
-					City:<br>
-					<form:input path="city" id="city" class="alert alert-success"/>
+					City:
+					<form:input path="city" id="city" class="form-control"/>
 					<form:errors path="city" />
 					<br>
-					<input type="submit" value="Dodaj" class="btn btn-outline-success"/>
+					Basic diagnosis:
+					<form:input path="basicDiagnosis" id="basicDiagnosis" class="form-control"/>
+					<form:errors path="basicDiagnosis" />
+					<br>
+					<input type="submit" value="Add" class="btn btn-primary add-patient"/>
 				</form:form>
+				<!-- </div> -->
 			</div>
-			<div class="col-sm-4">
-				<h2>LIST OF PATIENTS</h2>
+			<div class="col-sm-3">
+				<h2 class="text-center">LIST OF PATIENTS</h2>
+				<br>
 				<ul class="patientList list-group"></ul>
 				
 				<template id="patientTemplate">
-					<li class="list-group-item list-group-item-action">
-						<p data-id="{{id}}"><span>{{firstname}}</span> <span>{{lastname}}</span></p>
-						<button data-id="{{id}}" class="showDetails btn btn-outline-success">Details</button>
-						<button data-id="{{id}}" class="delPatient btn btn-outline-success">Delete</button>					
+					<li class="list-group-item">
+						<p data-id="{{id}}" class="text-center"><b>{{firstname}} {{lastname}}</b></p>
+						<button data-id="{{id}}" class="showDetails btn btn-primary">Details</button>
+						<button data-id="{{id}}" class="delPatient btn btn-primary">Delete</button>
+						<a href="<c:url value="/patient/details/{{id}}"/>" class="btn btn-primary">Documentation</a>					
 						<div data-id="{{id}}"></div>
 						<div class="editForm" style="display: none" data-id="{{id}}">
-								First Name:<br> 
-								<input type="text" name="firstname" value="{{firstname}}" class="alert alert-success"/><br> 
-								Last Name:<br> 
-								<input type="text" name="lastname" value="{{lastname}}" class="alert alert-success"/><br>
-								Email:<br> 
-								<input type="text" name="email" value="{{email}}" class="alert alert-success"/><br> 
-								Phone No:<br> 
-								<input type="text" name="phone" value="{{phone}}" class="alert alert-success"/><br>
-								Pesel:<br>
-								<input type="text" name="pesel" value="{{pesel}}" class="alert alert-success"/><br>
-								Street:<br>
-								<input type="text" name="street" value="{{street}}" class="alert alert-success"/><br>
-								Postcode:<br>
-								<input type="text" name="postcode" value="{{postcode}}" class="alert alert-success"/><br>
-								City:<br>
-								<input type="text" name="city" value="{{city}}" class="alert alert-success"/><br>
-							<button class="savePatient btn btn-outline-success">Save</button>
+								<br>
+								<input type="text" name="firstname" value="{{firstname}}" class="form-control"/><br> 
+								<input type="text" name="lastname" value="{{lastname}}" class="form-control"/><br>
+								<input type="text" name="email" value="{{email}}" class="form-control"/><br> 
+								<input type="text" name="phone" value="{{phone}}" class="form-control"/><br>
+								<input type="text" name="pesel" value="{{pesel}}" class="form-control"/><br>
+								<input type="text" name="street" value="{{street}}" class="form-control"/><br>
+								<input type="text" name="postcode" value="{{postcode}}" class="form-control"/><br>
+								<input type="text" name="city" value="{{city}}" class="form-control"/><br>
+								<input type="text" name="basicDiagnosis" value="{{basicDiagnosis}}" class="form-control"/><br>
+							<button class="savePatient btn btn-primary">Save</button>
 						</div>
 					</li>
 				</template>
@@ -112,8 +100,11 @@
 						<li><strong>Address: </strong><br>
 							<span>ul. {{street}}</span><br>
 							<span>{{postcode}} {{city}}</span><br></li>
+						<li><strong>Basic diagnosis: </strong><br>
+						{{basicDiagnosis}}</li>
 					</ul>
-					<button data-id="{{id}}" class="editPatient btn btn-outline-secondary">Edit</button>	
+					<br>
+					<button data-id="{{id}}" class="editPatient btn btn-primary">Edit</button>	
 				</template>
 				
 			</div>
@@ -121,10 +112,9 @@
 		</div>
 	</div>
 
-<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
 	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-	crossorigin="anonymous"></script> -->
-<!-- <script type="text/javascript" src="/PhysioApp/resources/patient.js?newversion"></script> -->
+	crossorigin="anonymous"></script>
 <script type="text/javascript" src="<c:url value="/static/js/patient.js?newversion"/>"></script>
 <script type="text/javascript" src="<c:url value="/static/js/mustache.js"/>"></script>
 </body>

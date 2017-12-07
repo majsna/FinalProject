@@ -5,46 +5,47 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
 
 @Entity
 @Table(name="patient")
 public class Patient {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-//	@Size(min=2, max=20)
+	@Size(min=2, max=20)
 	private String firstname;
 	
-//	@Size(min=2, max=30)
+	@Size(min=2, max=30)
 	private String lastname;
 	
 	private long phone;
-	
-//	@NotBlank
+		
 	@Column(unique=true, length=30)
-//	@Email
+	@Email
 	private String email;
-	
-//	@PESEL
+		
 	private long pesel;
-	
+		
 	private String street;
 	
 	private String postcode;
 	
 	private String city;
 	
+	private String basicDiagnosis;
+	
 	@OneToMany(mappedBy="patient", cascade=CascadeType.ALL)
 	private List<Visit> visits;
-	
-			
-	public long getId() {
-		return id;
-	}
 
 	public Patient(long id, String firstname, String lastname, String email, long pesel) {
 		this.id = id;
@@ -56,6 +57,10 @@ public class Patient {
 	
 	public Patient() {
 
+	}
+	
+	public long getId() {
+		return id;
 	}
 
 	public void setId(long id) {
@@ -126,6 +131,22 @@ public class Patient {
 	public void setCity(String city) {
 		this.city = city;
 	}
+
+	public String getBasicDiagnosis() {
+		return basicDiagnosis;
+	}
+
+	public void setBasicDiagnosis(String basicDiagnosis) {
+		this.basicDiagnosis = basicDiagnosis;
+	}
+
+//	public List<Visit> getVisits() {
+//		return visits;
+//	}
+//
+//	public void setVisits(List<Visit> visits) {
+//		this.visits = visits;
+//	}
 	
 	
 	

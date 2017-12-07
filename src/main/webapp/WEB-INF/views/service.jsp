@@ -10,49 +10,40 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Services</title>
 <link rel="stylesheet" type="text/css" href="<c:url value="/static/css/style.css"/>">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-	integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
-	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-	integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-	crossorigin="anonymous"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-	integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-	crossorigin="anonymous"></script>
+
 
 </head>
 <%@	include file="../../../header.jsp"%>
 <body>
 
-<a href="<c:url value="/service/add"/>">ADD NEW SERVICE</a>
+<div class="jumbotron">
+	<h2 class="text-center">SERVICES</h2>
+</div>
 
-<h2>SERVICES</h2>
-	<table border=1>
+<p class="text-center"><a href="<c:url value="/service/add"/>" class="btn btn-default"  >ADD NEW SERVICE <span class="glyphicon glyphicon-plus-sign"></span></a></p>
 
-		<tr>
+<div class="container">
+	<table class="table table-hover">
+
+		<tr class="info">
 			<th>Name</th>
 			<th>Description</th>
 			<th>Price</th>
-			<th>Action</th>
+			<th>Edit</th>
 		</tr>
 		<c:forEach items="${services}" var="s">
 			<tr>
 				<td>${s.name}</td>
 				<td>${s.description}</td>
 				<td>${s.price}</td>
-				<td><a href="<c:url value="/service/edit/${s.id}"/>">Edit</a> 
-				    <a href="<c:url value="/service/del/${s.id}"/>">Del</a></td>
+				<td>
+					<a href="<c:url value="/service/edit/${s.id}"/>"><span class="glyphicon glyphicon-edit"></span></a> 
+				</td>
 			</tr>
 		</c:forEach>
 
 	</table>
-
+</div>
 
 </body>
 </html>

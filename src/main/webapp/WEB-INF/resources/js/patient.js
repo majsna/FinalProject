@@ -6,7 +6,7 @@ $(function(){
     var $patientTemplate = $('#patientTemplate').html();
          
     function addPatient(patient){ 
-       $patientList.append(Mustache.render($patientTemplate, patient));  	
+       $patientList.append(Mustache.render($patientTemplate, patient)).fadeIn();  	
     }
        
     //loading patient from server
@@ -30,14 +30,7 @@ $(function(){
         
         event.preventDefault();
         
-        if($patientList.children().last().find('p').attr('data-id') == null){
-            var newId = 1;
-        }else{
-        	var newId = parseInt( $patientList.children().last().find('p').attr('data-id') ) +1;
-        }
-        
         var patient = {
-        		id: newId,
         		firstname: $addPatientForm.find('#firstname').val(),
         		lastname: $addPatientForm.find('#lastname').val(),
         		email: $addPatientForm.find('#email').val(),
@@ -45,25 +38,42 @@ $(function(){
         		pesel: $addPatientForm.find('#pesel').val(),
         		street: $addPatientForm.find('#street').val(),
         		postcode: $addPatientForm.find('#postcode').val(),
-        		city: $addPatientForm.find('#city').val()
+        		city: $addPatientForm.find('#city').val(),
+        		basicDiagnosis: $addPatientForm.find('#basicDiagnosis').val()
         		
         }
         
-        $.ajax({
-        	url: '/PhysioApp/patient/add',
-        	method: 'POST',
-        	data: JSON.stringify(patient),
-        	dataType: 'json',
-        	contentType: 'application/json'
-        })
-        .done(function(response){
-        	addPatient(patient);
-        	console.log('patient added successfully');
-        })
-        .fail(function(response){
-        	alert('error saving book');
-        	console.log(response);
-        })
+        if(patient.firstname != ""&&
+           patient.lastname != "" &&
+           patient.email != "" &&
+           patient.phone != "" &&
+           patient.pesel != "" &&
+           patient.street != "" &&
+           patient.postcode != "" &&
+           patient.city != "" &&
+           patient.basicDiagnosis != ""){
+        	
+        	  $.ajax({
+              	url: '/PhysioApp/patient/add',
+              	method: 'POST',
+              	data: JSON.stringify(patient),
+              	dataType: 'json',
+              	contentType: 'application/json'
+              })
+              .done(function(responsePatient){            	
+              	addPatient(responsePatient);
+              	console.log(responsePatient);
+              })
+              .fail(function(response){
+              	alert('Email must be well-formed and unique in our database!');
+              	console.log(response);
+              })
+        	
+        }else{
+        	alert('All fields are mandatory!')
+        }
+        
+      
         
     })
     
@@ -77,7 +87,7 @@ $(function(){
     
     $patientList.delegate('button.showDetails','click', function(){
     	
-    	var $div = $(this).next().next();
+    	var $div = $(this).next().next().next();
     	var self = $(this);
     	
     	$.ajax({
@@ -87,11 +97,15 @@ $(function(){
     		
     		if( $div.children().length == 0 ){
     			addPatientDetails($div,patient);
+    			self.text('Hide');
 			}else{
 				if($div.css('display')=='none'){
 					$div.css('display', 'block').hide().slideDown();
 					self.text('Hide');
-				}else {	
+				}else {
+					if($div.next().css('display') != 'none') {
+						$div.next().css('display', 'none').show().slideUp();						
+					}
 					$div.css('display', 'none').show().slideUp();
 					self.text('Details');
 				}
@@ -120,7 +134,6 @@ $(function(){
     })
     
     //editing patient
-    var $editButton = $('button.editPatient');
     
     $patientList.on('click', 'button.editPatient', function(){
     	
@@ -134,7 +147,6 @@ $(function(){
     	 
     })
     
-    var $saveButton = $('button.savePatient');
     
     $patientList.delegate('button.savePatient','click', function(){
     
@@ -152,27 +164,45 @@ $(function(){
         		pesel: $div.find('[name=pesel]').val(),
         		street: $div.find('[name=street]').val(),
         		postcode: $div.find('[name=postcode]').val(),
-        		city: $div.find('[name=city]').val()
+        		city: $div.find('[name=city]').val(),
+        		basicDiagnosis: $div.find('[name=basicDiagnosis]').val()
     	}
     	
-    	$.ajax({
-    		url: '/PhysioApp/patient/'+$div.attr('data-id'),
-    		method: 'PUT',
-			data: JSON.stringify(editedPatient),
-			dataType: 'json',
-			contentType: 'application/json'
-    	})
-    	.done(function(response){
-    		console.log(response);
-    		$self.closest('div').prev().empty();
-    		addPatientDetails($self.closest('div').prev(), editedPatient);
-    		$div.css('display', 'none').show().slideUp(); 
-    		$self.text('Edit');
-    	})
-    	.fail(function(response){
-    		alert('error editing patient');
-    		console.log(response);
-    	})
+    	 if(editedPatient.firstname != ""&&
+    	    editedPatient.lastname != "" &&
+    	    editedPatient.email != "" &&
+    	    editedPatient.phone != "" &&
+    	    editedPatient.pesel != "" &&
+    	    editedPatient.street != "" &&
+    	    editedPatient.postcode != "" &&
+    	    editedPatient.city != "" &&
+    	    editedPatient.basicDiagnosis != ""){
+    		 
+    		 $.ajax({
+    	    		url: '/PhysioApp/patient/'+$div.attr('data-id'),
+    	    		method: 'PUT',
+    				data: JSON.stringify(editedPatient),
+    				dataType: 'json',
+    				contentType: 'application/json'
+    	    	})
+    	    	.done(function(response){
+    	    		console.log(response);
+    	    		$self.closest('div').prev().empty();
+    	    		addPatientDetails($self.closest('div').prev(), editedPatient);
+    	    		$par.find('b').text($div.find('[name=firstname]').val()+" "+$div.find('[name=lastname]').val());
+    	    		$div.css('display', 'none').show().slideUp(); 
+    	    		$self.text('Edit');
+    	    	})
+    	    	.fail(function(response){
+    	    		alert('error editing patient');
+    	    		console.log(response);
+    	    	})
+    		 
+    	 }else {
+    		 alert("All fields are mandatory!")
+    	 }
+    	
+    	
     	
     })
     

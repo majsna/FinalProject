@@ -9,26 +9,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Pacjenci</title>
+<link rel="stylesheet" type="text/css" href="<c:url value="/static/css/style.css"/>">
 
 </head>
 <%@	include file="../../../header.jsp"%>
 <body>
-
-	<div class="jumbotron">
-		<h2 class="text-center">ADD VISIT FORM</h2>
-	</div>
 	
+	<div class="jumbotron">
+		<h2 class="text-center"><b>ADD VISIT FOR ${onePatient.firstname} ${onePatient.lastname}</b></h2>
+	</div>
+
 	<div class="container center_div">
 		<div class="col-sm-4 col-sm-offset-4">
-			<form:form method="post" modelAttribute="visit" align="left">
-						
-				Patient:<br>
-				<form:select path="patient" items="${patients}" itemValue="id"
-					itemLabel="lastname" class="form-control" />
-				<form:errors path="patient" class="error" />
-				<br>			
+		
+			<form:form method="post" modelAttribute="visit" align="left">		
 				Date(yyyy-mm-dd):<br>
-				<form:input path="date" class="form-control datepicker" data-date-format="yyyy-mm-dd"/>
+				<form:input path="date" class="form-control datepicker" />
 				<form:errors path="date" class="error" />
 				<span class="error">${message}</span>
 				<br>
