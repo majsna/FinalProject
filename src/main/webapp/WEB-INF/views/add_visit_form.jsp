@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Pacjenci</title>
+<title>PhysioApp</title>
 
 </head>
 <%@	include file="../../../header.jsp"%>

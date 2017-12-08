@@ -21,7 +21,7 @@ public class Visit {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	@Future
+
 	@NotNull
 	private Date date;
 	

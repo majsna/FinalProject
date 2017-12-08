@@ -1,3 +1,6 @@
+/*jslint browser: true*/
+/*global $, jQuery, alert*/
+
 $(function(){
 	
 	//adding diagnosis to the visit

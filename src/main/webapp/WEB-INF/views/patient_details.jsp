@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Patient doc</title>
+<title>PhysioApp</title>
 <link rel="stylesheet" type="text/css" href="<c:url value="/static/css/style.css"/>">
 
 
