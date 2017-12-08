@@ -1,8 +1,10 @@
 package pl.physio.controller;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ import pl.physio.entity.Visit;
 import pl.physio.repository.PatientRepository;
 import pl.physio.repository.ServiceRepository;
 import pl.physio.repository.VisitRepository;
-import pl.physio.service.*;
+import pl.physio.service.DataParser;
 
 @Controller
 @RequestMapping("/calendar")
@@ -46,7 +48,6 @@ public class VisitController {
 	
 	@RequestMapping("")
 	public String viewVisits(Model model) {
-//		model.addAttribute("visits", visitRepository.customFindByDateAndTime());
 		model.addAttribute("visits", visitRepository.customFindByDateAndTimeFuture(new Date((new java.util.Date()).getTime())));
 		return "calendar";		
 	}
@@ -54,26 +55,24 @@ public class VisitController {
 	@RequestMapping(value="", method=RequestMethod.POST)
 	public String filteredVisits(Model model,
 								 @RequestParam String fromDate,
-								 @RequestParam String toDate) {
-		
-//		String[] fromParts = fromDate.split("-");
-//		String[] toParts = toDate.split("-");
-//		String message = "The \"from\" date must be sooner or equal to the \"to\" date!"; 
-//		
-//		if(	   Integer.parseInt(toParts[0]) < Integer.parseInt(fromParts[0]) 
-//			|| Integer.parseInt(toParts[1]) < Integer.parseInt(fromParts[1])
-//			|| Integer.parseInt(toParts[2]) < Integer.parseInt(fromParts[2])) {
-//			
-//			model.addAttribute("message", message);
-//			model.addAttribute("visits", visitRepository.customFindByDateAndTimeFuture(new Date((new java.util.Date()).getTime())));
-//			return "calendar";
-//		}
-		String message1 = "Both filds are mandatoty";
+								 @RequestParam String toDate,
+								 HttpSession sess) {
+		String message1 = "Both filds are mandatory";
 		String message2 = "The \"from\" date must be sooner or equal to the \"to\" date!";
-		
+		boolean sessExist = false;
+		List<Visit> lastsearch = new ArrayList<>();
+		if(sess.getAttribute("lastsearch") != null) {
+			lastsearch = (List<Visit>)sess.getAttribute("lastsearch");
+			sessExist = true;
+		}
+		List<Visit> primarySearch = visitRepository.customFindByDateAndTimeFuture(new Date((new java.util.Date()).getTime()));
 		if(fromDate.equals("") || toDate.equals("")) {
 			model.addAttribute("message", message1);
-			model.addAttribute("visits", visitRepository.customFindByDateAndTimeFuture(new Date((new java.util.Date()).getTime())));
+			if(sessExist) {
+				model.addAttribute("visits", lastsearch);
+			}else {
+				model.addAttribute("visits", primarySearch);				
+			}
 			return "calendar";
 		}
 		
@@ -83,11 +82,17 @@ public class VisitController {
 		
 		if(fromDateParsed.after(toDateParsed)) {
 			model.addAttribute("message", message2);
-			model.addAttribute("visits", visitRepository.customFindByDateAndTimeFuture(new Date((new java.util.Date()).getTime())));
+			if(sessExist) {
+				model.addAttribute("visits", lastsearch);
+			}else {
+				model.addAttribute("visits", primarySearch);				
+			}
 			return "calendar";
 		}
 		
-		model.addAttribute("visits", visitRepository.visitsFromTo(fromDateParsed, toDateParsed));
+		List<Visit> visits =  visitRepository.visitsFromTo(fromDateParsed, toDateParsed);
+		sess.setAttribute("lastsearch", visits);
+		model.addAttribute("visits", visits);
 		return "calendar";
 	}
 	
