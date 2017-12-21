@@ -87,7 +87,7 @@
 								<div style="display: none">
 									<input type="hidden" name="id" value="${vp.id}"/>
 									<input type="hidden" name="date" value="${vp.date}"/>
-									<textarea name="diagnosis" form="diagnoForm" rows="5" cols="25"></textarea>
+									<textarea name="diagnosis" form="diagnoForm" rows="5" cols="25">${vp.diagnosis}</textarea>
 									<input type="hidden" name="hour" value="${vp.hour}"/>
 									<input type="hidden" name="patient_id" value="${vp.patient.id}"/>
 									<input type="hidden" name="service_id" value="${vp.service.id}"/><br>
